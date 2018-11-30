@@ -13,14 +13,18 @@ import tensorflow as tf
 
 # Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
-mnist = input_data.read_data_sets("/tmp/data/", one_hot=True)
+
+# !important 每个项目固定训练目录 /mnt/data
+mnist = input_data.read_data_sets("/mnt/data/", one_hot=True)
 
 # Parameters
 learning_rate = 0.01
 training_epochs = 25
 batch_size = 100
 display_epoch = 1
-logs_path = '/tmp/tensorflow_logs/example/'
+
+# !important 每个项目固定日志目录 /data/logs
+logs_path = '/data/logs/'
 
 # tf Graph Input
 # mnist data image of shape 28*28=784
@@ -64,9 +68,16 @@ with tf.Session() as sess:
     # Run the initializer
     sess.run(init)
 
+    # Saving
+    inputs = {
+        "x": x,
+        "y": y,
+    }
+
     # op to write logs to Tensorboard
     summary_writer = tf.summary.FileWriter(logs_path, graph=tf.get_default_graph())
 
+    outputs = {"prediction": pred}
     # Training cycle
     for epoch in range(training_epochs):
         avg_cost = 0.
@@ -86,6 +97,11 @@ with tf.Session() as sess:
         if (epoch+1) % display_epoch == 0:
             print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
 
+
+    # !important 每个项目固定模型输出目录 /data/models
+    tf.saved_model.simple_save(
+        sess, '/data/models/myModel', inputs, outputs
+    )
     print("Optimization Finished!")
 
     # Test model
@@ -95,3 +111,4 @@ with tf.Session() as sess:
     print("Run the command line:\n" \
           "--> tensorboard --logdir=/tmp/tensorflow_logs " \
           "\nThen open http://0.0.0.0:6006/ into your web browser")
+
