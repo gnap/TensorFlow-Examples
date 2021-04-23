@@ -9,7 +9,7 @@ Project: https://github.com/aymericdamien/TensorFlow-Examples/
 
 from __future__ import print_function
 
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 # Import MNIST data
 from tensorflow.examples.tutorials.mnist import input_data
