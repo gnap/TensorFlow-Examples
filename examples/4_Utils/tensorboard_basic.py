@@ -11,11 +11,7 @@ from __future__ import print_function
 
 import tensorflow as tf
 
-# Import MNIST data
-from tensorflow.examples.tutorials.mnist import input_data
-
-# !important 每个项目固定训练目录 /mnt/data
-mnist = input_data.read_data_sets("/mnt/data/", one_hot=True)
+mnist = tf.keras.datasets.mnist
 
 # Parameters
 learning_rate = 0.01
